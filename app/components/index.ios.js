@@ -5,6 +5,7 @@ import SideNav from './SideNav';
 import Inventory from './Inventory';
 import Scan from './Scan';
 import Sell from './Sell';
+import Preview from './Preview';
 
 // register all screens of the app (including internal ones)
 export function registerScreens() {
@@ -13,4 +14,5 @@ export function registerScreens() {
   	Navigation.registerComponent('Inventory', () => Inventory);
   	Navigation.registerComponent('Scan', () => Scan);
   	Navigation.registerComponent('Sell', () => Sell);
+  	Navigation.registerComponent('Preview', () => Preview);
 }

@@ -99,7 +99,7 @@ export default class HomeView extends Component {
 		this.props.navigator.push({
 			screen: 'Scan',
 			navigatorStyle: {
-				// navBarHidden: true
+				navBarHidden: true
 			}
 		});
 	}

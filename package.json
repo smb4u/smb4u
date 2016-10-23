@@ -9,6 +9,7 @@
   "dependencies": {
     "react": "15.3.2",
     "react-native": "0.33.0",
+    "react-native-aws3": "0.0.2",
     "react-native-camera": "git+https://github.com/lwansbrough/react-native-camera.git",
     "react-native-navigation": "2.0.0-experimental.133",
     "react-native-qrcode": "^0.2.2",
