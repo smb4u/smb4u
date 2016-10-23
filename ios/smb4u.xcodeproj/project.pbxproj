@@ -780,7 +780,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "itemise-ajdev";
+				PRODUCT_BUNDLE_IDENTIFIER = "itemise-ajdev2";
 				PRODUCT_NAME = smb4u;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
@@ -809,7 +809,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "itemise-ajdev";
+				PRODUCT_BUNDLE_IDENTIFIER = "itemise-ajdev2";
 				PRODUCT_NAME = smb4u;
 				VERSIONING_SYSTEM = "apple-generic";
 			};

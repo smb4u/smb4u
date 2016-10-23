@@ -113,29 +113,41 @@ export default class Inventory extends Component {
 	}
 
 	componentDidMount() {
-		// this.getInventory();
+		this.getInventory();
 	}
 
 	getInventory() {
-	  fetch('http://104.236.188.210:8000/getPhotos',
-	  {
-	      method: 'POST',
-	      headers: {
-	          'Accept': 'application/json',
-	          'Content-Type': 'application/json',
-	      },
-	      body: JSON.stringify(sendInfo)
-	  })
-	  .then((err) => {
-	    var context = this;
-	    if(err.status === 201) {
-	      this.setState({
-	        dataSource: ds.cloneWithRows(JSON.parse(err._bodyInit)),
-	        pictures: JSON.parse(err._bodyInit),
-	        loaded: true
-	      });
-	    }
-	  })
+		fetch('http://ec2-35-161-63-144.us-west-2.compute.amazonaws.com:8000/getInventory', 
+		  {
+		    method: 'GET',
+		    headers: {
+		        'Content-Type': 'application/json',
+		    },
+		  })
+		  .then(res => res.json())
+		  .then(res => {
+		    console.warn('res', res);
+		  })
+		  .catch((error) => console.warn("fetch error:", error))
+	  // fetch('http://104.236.188.210:8000/getPhotos',
+	  // {
+	  //     method: 'POST',
+	  //     headers: {
+	  //         'Accept': 'application/json',
+	  //         'Content-Type': 'application/json',
+	  //     },
+	  //     body: JSON.stringify(sendInfo)
+	  // })
+	  // .then((err) => {
+	  //   var context = this;
+	  //   if(err.status === 201) {
+	  //     this.setState({
+	  //       dataSource: ds.cloneWithRows(JSON.parse(err._bodyInit)),
+	  //       pictures: JSON.parse(err._bodyInit),
+	  //       loaded: true
+	  //     });
+	  //   }
+	  // })
 	}
 
 	render() {

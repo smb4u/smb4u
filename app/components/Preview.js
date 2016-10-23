@@ -1,3 +1,4 @@
+console.disableYellowBox = true;
 import React, {Component} from 'react';
 import {
   Dimensions,
@@ -7,7 +8,8 @@ import {
   Image,
   TouchableHighlight,
   TextInput,
-  AlertIOS
+  AlertIOS,
+  Switch
 } from 'react-native';
 import { Navigation } from 'react-native-navigation';
 import { registerScreens } from './index.ios.js';
@@ -28,13 +30,17 @@ export default class Preview extends Component {
     this.state = {
       image: props.image,
       description: '',
-      category: '',
+      category: 'clothes',
       price: 0,
-      text: 'http://facebook.github.io/react-native/'
+      text: 'http://facebook.github.io/react-native/',
+      falseSwitchIsOn: false,
+      check: 'Sell'
     }
     this.descriptionBox = this.descriptionBox.bind(this);
+    this.priceBox = this.priceBox.bind(this);
     this.submitPhoto = this.submitPhoto.bind(this);
     this.goBackToCamera = this.goBackToCamera.bind(this);
+    this.switchChange = this.switchChange.bind(this);
   }
  
   componentDidMount() {
@@ -52,6 +58,17 @@ export default class Preview extends Component {
       ], 
     );
   }
+  priceBox() {
+    AlertIOS.prompt(
+      'Price', null,
+      [
+        {text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
+        {text: 'OK', onPress: price => {
+          this.setState({price: price});
+        }},
+      ], 
+    );
+  }
 
   getCode() {
     var text = "";
@@ -60,6 +77,15 @@ export default class Preview extends Component {
       text += possible.charAt(Math.floor(Math.random() * possible.length));
     }
     return text;
+  }
+
+  switchChange(val) {
+    if (val) {
+       console.warn(val, 'bang')
+       this.setState({ falseSwitchIsOn: val, check: 'Add'});
+    } else {
+      this.setState({ falseSwitchIsOn: val, check: 'Sell'});
+    }
   }
 
   submitPhoto() {
@@ -92,25 +118,43 @@ export default class Preview extends Component {
         category: this.state.category,
         price: this.state.price,
         QRcode: code,
+        check: this.state.check,
         url: 'https://franticrust.s3-us-west-1.amazonaws.com/uploads%2F' + photo.filename,
       };
-      
-      fetch('http://ec2-35-161-63-144.us-west-2.compute.amazonaws.com:8000/saveItem', 
-        {
-          method: 'POST',
-          headers: {
-              'Accept': 'application/json',
-              'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(photoObj)
-        })
-        .then(res => res.json())
-        .then(res => {
-          console.warn('res', res);
-        })
-        .catch((error) => console.warn("fetch error:", error))
 
-      AlertIOS.alert('Photo is now Live');
+      if (!this.state.falseSwitchIsOn) {
+        fetch('http://ec2-35-161-63-144.us-west-2.compute.amazonaws.com:8000/sellItem',
+          {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(photoObj)
+          })
+          .then(res => res.json())
+          .then(res => {
+            console.warn('res', res);
+          })
+          .catch((error) => console.warn("fetch error:", error))
+          AlertIOS.alert('Photo is now Sold');
+        } else {
+          fetch('http://ec2-35-161-63-144.us-west-2.compute.amazonaws.com:8000/saveItem', 
+            {
+              method: 'POST',
+              headers: {
+                  'Accept': 'application/json',
+                  'Content-Type': 'application/json',
+              },
+              body: JSON.stringify(photoObj)
+            })
+            .then(res => res.json())
+            .then(res => {
+              console.warn('res', res);
+            })
+            .catch((error) => console.warn("fetch error:", error))
+            AlertIOS.alert('Photo is now Live');
+        }
       this.props.navigator.popToRoot();
   }
 
@@ -125,6 +169,16 @@ export default class Preview extends Component {
         <TouchableHighlight onPress={this.descriptionBox}>
           <Text style={styles.text}>Enter Description</Text>
         </TouchableHighlight>
+        <TouchableHighlight onPress={this.priceBox}>
+          <Text style={styles.text}>Enter Price</Text>
+        </TouchableHighlight>
+        <View>
+          <Text>{this.state.check}</Text>
+          <Switch
+            onValueChange={(value) => this.switchChange(value)}
+            style={{marginBottom: 10}}
+            value={this.state.falseSwitchIsOn} />
+        </View>
         <View style={styles.buttonsContainer}>
           <View style={styles.button}>
             <TouchableHighlight onPress={this.goBackToCamera} underlayColor='transparent'>
