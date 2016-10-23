@@ -1,6 +1,9 @@
 package com.smb4u;
 
 import com.facebook.react.ReactActivity;
+import com.lwansbrough.RCTCamera.RCTCameraPackage;
+import com.oblador.vectoricons.VectorIconsPackage;
+import com.reactnativenavigation.NavigationReactPackage;
 
 public class MainActivity extends ReactActivity {
 
