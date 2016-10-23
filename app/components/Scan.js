@@ -51,9 +51,9 @@ export default class Scan extends Component {
 		this.props.navigator.push({
 			screen: 'Preview',
 			navigatorStyle: {
-				// navBarHidden: true
+				navBarHidden: true
 			},
-			passProps: {}
+			passProps: { image: this.state.image }
 		});
 	}
 
